@@ -1,6 +1,7 @@
 use log::{debug, error, info, warn};
 use rand::{thread_rng, Rng};
-use std::collections::HashMap;
+use structopt::StructOpt;
+use std::{collections::HashMap, path::PathBuf};
 use lazy_static::lazy_static;
 
 lazy_static!{
@@ -17,6 +18,27 @@ fn main() {
     random_generations();
     logging();
     lazy_init();
+    parse_args();
+}
+
+// cargo run -- myfile1.txt -v --result hello.txt
+#[derive(StructOpt, Debug)]
+struct Opts {
+    /// Activate verbose mode
+    #[structopt(short = "v", long = "verbose")]
+    verbose: bool,
+
+    /// File to generate
+    #[structopt(short = "r", long = "result", parse(from_os_str))]
+    result_file: PathBuf,
+
+    /// Files to process
+    #[structopt(name = "FILE", parse(from_os_str))]
+    files: Vec<PathBuf>,
+}
+
+fn parse_args() {
+    println!("{:#?}", Opts::from_args());
 }
 
 fn random_generations() {
