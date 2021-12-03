@@ -1,10 +1,15 @@
+use lazy_static::lazy_static;
 use log::{debug, error, info, warn};
 use rand::{thread_rng, Rng};
+use std::{
+    collections::HashMap,
+    fmt::{self, Result},
+    path::PathBuf,
+    result,
+};
 use structopt::StructOpt;
-use std::{collections::HashMap, path::PathBuf, fmt::{Result, self}, num::{ParseIntError, IntErrorKind}, result, error::{Error, self}};
-use lazy_static::lazy_static;
 
-lazy_static!{
+lazy_static! {
     static ref DICTIONARY: HashMap<u32, &'static str> = {
         let mut m = HashMap::new();
         m.insert(11, "food");
@@ -12,11 +17,10 @@ lazy_static!{
         println!("Initialized");
         m
     };
-
     static ref NUMBERS: Vec<u32> = {
         let mut n = Vec::new();
         for i in 1..201 {
-            n.push(i*i);
+            n.push(i * i);
         }
         n
     };
@@ -55,7 +59,11 @@ struct MyError {
 
 impl fmt::Display for MyError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result {
-        write!(f, "invalid number, expected between 1 and 20, provided: {}", self.src)
+        write!(
+            f,
+            "invalid number, expected between 1 and 20, provided: {}",
+            self.src
+        )
     }
 }
 
@@ -65,7 +73,9 @@ fn parse_range(src: &str) -> result::Result<u8, MyError> {
             return Ok(n);
         }
     }
-    Err(MyError{src: String::from(src)})
+    Err(MyError {
+        src: String::from(src),
+    })
 }
 
 fn parse_args() {
@@ -78,7 +88,7 @@ fn random_generations() {
     println!("{}", rng.gen::<f64>());
     println!("{}", if rng.gen() { "Heads" } else { "Tails" });
 
-    for i in 0..10 {
+    for _ in 0..10 {
         let num: f32 = rng.gen_range(100f32..400f32);
         println!("{}", num);
     }
