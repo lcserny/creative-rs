@@ -59,11 +59,7 @@ struct MyError {
 
 impl fmt::Display for MyError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result {
-        write!(
-            f,
-            "invalid number, expected between 1 and 20, provided: {}",
-            self.src
-        )
+        write!(f, "invalid number, expected between 1 and 20, provided: {}", self.src)
     }
 }
 
@@ -73,9 +69,7 @@ fn parse_range(src: &str) -> result::Result<u8, MyError> {
             return Ok(n);
         }
     }
-    Err(MyError {
-        src: String::from(src),
-    })
+    Err(MyError { src: String::from(src), })
 }
 
 fn parse_args() {
